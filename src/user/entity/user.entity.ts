@@ -11,7 +11,7 @@ export class User {
   @Property({ length: 100 })
   email!: string;
 
-  @Property({ length: 100 })
+  @Property({ length: 100, hidden: true })
   password!: string;
 
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
