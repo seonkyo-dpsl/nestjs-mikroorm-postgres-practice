@@ -4426,6 +4426,11 @@ micromatch@^4.0.0, micromatch@^4.0.4, micromatch@~4.0.8:
     braces "^3.0.3"
     picomatch "^2.3.1"
 
+mikro-orm-soft-delete@^1.0.0-alpha.1:
+  version "1.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/mikro-orm-soft-delete/-/mikro-orm-soft-delete-1.0.0-alpha.1.tgz#8912a8a7be00d84b786de7f12b579849ca1f3888"
+  integrity sha512-C06kX4hKGcgLleVoZa9oafYaUK4+T7I+R+aDy64HY+sHuYn/H/HZShpZIt4Lg1DUOhyjau6dA3ZuJYiu02Su1g==
+
 mikro-orm@6.3.13:
   version "6.3.13"
   resolved "https://registry.yarnpkg.com/mikro-orm/-/mikro-orm-6.3.13.tgz#b8b6a56f777bc22a5847879a181db30af6fe2c45"

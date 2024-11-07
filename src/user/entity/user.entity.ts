@@ -1,5 +1,7 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { SoftDeletable } from 'mikro-orm-soft-delete';
 
+@SoftDeletable(() => User, 'deletedAt', () => new Date())
 @Entity()
 export class User {
   @PrimaryKey({ autoincrement: true })
@@ -19,4 +21,7 @@ export class User {
 
   @Property({ nullable: false, defaultRaw: 'CURRENT_TIMESTAMP', onUpdate: () => new Date() })
   updatedAt?: Date;
+
+  @Property({ nullable: true })
+  deletedAt?: Date;
 }

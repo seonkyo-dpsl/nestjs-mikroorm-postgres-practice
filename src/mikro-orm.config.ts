@@ -4,6 +4,7 @@ import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import * as fs from 'fs';
 import * as path from 'path';
 import { isProd } from './common/constant';
+import { SoftDeleteHandler } from 'mikro-orm-soft-delete';
 
 const ormConfigPath = path.join(__dirname, '../ormconfig.json');
 const ormConfig = JSON.parse(fs.readFileSync(ormConfigPath, 'utf-8'));
@@ -22,6 +23,7 @@ const createMikroOrmConfig = defineConfig({
   driver: PostgreSqlDriver,
   metadataProvider: TsMorphMetadataProvider,
   debug: !isProd,
+  extensions: [SoftDeleteHandler],
   migrations: {
     path: './src/migrations',
     pathTs: './src/migrations',

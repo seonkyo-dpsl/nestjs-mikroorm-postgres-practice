@@ -17,4 +17,8 @@ export class UserService {
   async addUser(args: IAddUser) {
     return this.userRepository.add(args);
   }
+
+  async removeUserById(id: number) {
+    return this.userRepository.removeById(id);
+  }
 }

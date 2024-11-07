@@ -28,4 +28,13 @@ export class UserRepository {
 
     return user;
   }
+
+  async removeById(id: number) {
+    const entity = await this.userRepository.findOne(id);
+    if (entity) {
+      await this.em.remove(entity).flush();
+    }
+
+    return true;
+  }
 }
