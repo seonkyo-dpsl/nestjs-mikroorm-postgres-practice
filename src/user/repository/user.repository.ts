@@ -17,6 +17,10 @@ export class UserRepository {
     return this.userRepository.findOne(id);
   }
 
+  async getMany(offset: number, limit: number) {
+    return this.userRepository.find({}, { offset, limit });
+  }
+
   async add(args: IAdd) {
     const user = this.userRepository.create(args);
     this.em.persist(user);

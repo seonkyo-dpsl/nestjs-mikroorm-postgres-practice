@@ -10,6 +10,10 @@ export class UserService {
     return this.userRepository.getOneById(id);
   }
 
+  async getUsers(offset: number, limit: number) {
+    return this.userRepository.getMany(offset, limit);
+  }
+
   async addUser(args: IAddUser) {
     return this.userRepository.add(args);
   }
