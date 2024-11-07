@@ -1,18 +1,61 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
+import { UserService } from '../user/user.service';
+import { MockUserService } from '../../test/service';
+import { userMockData } from '../../test/data';
+
+import * as bcrypt from 'bcrypt';
+
+jest.mock('bcrypt');
 
 describe('AuthService', () => {
   let service: AuthService;
+  let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      providers: [
+        AuthService,
+        {
+          provide: UserService,
+          useValue: MockUserService,
+        },
+      ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    userService = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('register', () => {
+    it('회원가입하는 경우 비밀번호를 암호화한다.', async () => {
+      // given
+      const user = userMockData;
+      (bcrypt.hash as jest.Mock).mockResolvedValue(user.password);
+
+      jest.spyOn(userService, 'addUser').mockResolvedValue(user);
+
+      const email = user.email;
+      const password = 'password';
+      const name = user.name;
+
+      // when
+      const result = await service.register({ email, password, name });
+
+      // then
+      expect(result).toBe(true);
+      expect(bcrypt.hash).toHaveBeenCalledTimes(1);
+      expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
+      expect(userService.addUser).toHaveBeenCalledTimes(1);
+      expect(userService.addUser).toHaveBeenCalledWith({ email, password: user.password, name });
+    });
   });
 });
