@@ -1,20 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { UserModule } from './user/user.module';
 import mikroOrmConfig from './mikro-orm.config';
 
 @Module({
   imports: [
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MikroOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => mikroOrmConfig(configService),
-      inject: [ConfigService],
-    }),
+    MikroOrmModule.forRoot(mikroOrmConfig),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,23 +1,38 @@
 import { defineConfig } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { LoadStrategy } from '@mikro-orm/core';
-import { ConfigService } from '@nestjs/config';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import * as fs from 'fs';
+import * as path from 'path';
+import { isProd } from './common/constant';
 
-export const mikroOrmConfig = (configService: ConfigService) => {
-  return defineConfig({
-    dbName: configService.get('DATABASE_NAME'),
-    user: configService.get('DATABASE_USER'),
-    password: configService.get('DATABASE_PASSWORD'),
-    host: configService.get('DATABASE_HOST'),
-    port: parseInt(configService.get('DATABASE_PORT') ?? '5432', 10),
+const ormConfigPath = path.join(__dirname, '../ormconfig.json');
+const ormConfig = JSON.parse(fs.readFileSync(ormConfigPath, 'utf-8'));
 
-    entities: ['dist/**/*.entity.js'],
-    entitiesTs: ['src/**/*.entity.ts'],
-
-    metadataProvider: TsMorphMetadataProvider,
-    debug: configService.get('NODE_ENV') !== 'production',
-    loadStrategy: LoadStrategy.JOINED,
-  });
+const config = {
+  ...ormConfig,
+  dbName: ormConfig.dbName,
+  host: ormConfig.host,
+  port: ormConfig.port,
+  user: ormConfig.user,
+  password: ormConfig.password,
 };
 
-export default mikroOrmConfig;
+const createMikroOrmConfig = defineConfig({
+  ...config,
+  driver: PostgreSqlDriver,
+  metadataProvider: TsMorphMetadataProvider,
+  debug: !isProd,
+  migrations: {
+    path: './src/migrations',
+    pathTs: './src/migrations',
+    glob: '!(*.d).{js,ts}',
+    transactional: true,
+    disableForeignKeys: true,
+    allOrNothing: true,
+    dropTables: false,
+    safe: false,
+    snapshot: true,
+  },
+});
+
+export default createMikroOrmConfig;
