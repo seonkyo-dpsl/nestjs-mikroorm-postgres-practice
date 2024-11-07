@@ -60,4 +60,19 @@ describe('UserService', () => {
       expect(userRepository.add).toHaveBeenCalledWith(user);
     });
   });
+
+  describe('removeUser', () => {
+    it('사용자를 삭제할 수 있다.', async () => {
+      // given
+      const userId = userMockData.id;
+
+      // when
+      const result = await service.removeUserById(userId);
+
+      // then
+      expect(result).toBe(true);
+      expect(userRepository.removeById).toHaveBeenCalledTimes(1);
+      expect(userRepository.removeById).toHaveBeenCalledWith(userId);
+    });
+  });
 });
