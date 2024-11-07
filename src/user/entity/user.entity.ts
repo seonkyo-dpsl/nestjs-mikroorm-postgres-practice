@@ -15,8 +15,8 @@ export class User {
   password!: string;
 
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-  createdAt: Date = new Date();
+  createdAt?: Date;
 
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP', onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt?: Date;
 }

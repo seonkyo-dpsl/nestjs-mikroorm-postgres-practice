@@ -5,12 +5,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'prettier',
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'unused-imports'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'prettier'],
   root: true,
   env: {
     node: true,
@@ -20,14 +16,17 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'prettier/prettier': ['error', { printWidth: 100 }],
-    'max-len': ['error', { 
-      code: 100,
-      ignoreUrls: true,
-      ignoreStrings: true,
-      ignoreTemplateLiterals: true,
-      ignoreComments: true,
-      ignoreRegExpLiterals: true
-    }],
+    'max-len': [
+      'error',
+      {
+        code: 100,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreComments: true,
+        ignoreRegExpLiterals: true,
+      },
+    ],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -35,6 +34,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-empty-interface': 'warn',
+    'unused-imports/no-unused-imports': 'warn',
     'no-console': 'warn',
   },
 };
