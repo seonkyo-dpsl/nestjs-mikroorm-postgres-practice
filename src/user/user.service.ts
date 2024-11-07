@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './repository';
 import { IAddUser } from './interface';
+import { Exceptions } from '../common/exceptions';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async getUserById(id: number) {
-    return this.userRepository.getOneById(id);
+    const user = await this.userRepository.getOneById(id);
+    if (!user) {
+      throw Exceptions.notFoundTarget('user');
+    }
+
+    return user;
   }
 
   async getUserByEmailForLogin(email: string) {

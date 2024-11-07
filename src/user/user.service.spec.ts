@@ -4,6 +4,7 @@ import { UserRepository } from './repository';
 
 import { userMockData } from '../../test/data';
 import { MockUserRepository } from '../../test/repository';
+import { Exceptions } from '../common/exceptions';
 
 describe('UserService', () => {
   let service: UserService;
@@ -41,6 +42,18 @@ describe('UserService', () => {
 
       // then
       expect(result).toEqual(user);
+      expect(userRepository.getOneById).toHaveBeenCalledTimes(1);
+      expect(userRepository.getOneById).toHaveBeenCalledWith(userId);
+    });
+
+    it('ID에 해당하는 사용자가 없으면 404에러를 반환한다.', async () => {
+      // given
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(null);
+
+      const userId = 1;
+
+      // when - then
+      await expect(service.getUserById(userId)).rejects.toThrow(Exceptions.notFoundTarget('user'));
       expect(userRepository.getOneById).toHaveBeenCalledTimes(1);
       expect(userRepository.getOneById).toHaveBeenCalledWith(userId);
     });
