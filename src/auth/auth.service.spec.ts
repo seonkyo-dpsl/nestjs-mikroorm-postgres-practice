@@ -35,6 +35,50 @@ describe('AuthService', () => {
     jest.clearAllMocks();
   });
 
+  describe('login', () => {
+    it('비밀번호가 일치하면 로그인에 성공한다.', async () => {
+      // given
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+
+      const user = userMockData;
+      jest.spyOn(userService, 'getUserByEmailForLogin').mockResolvedValue(user);
+
+      const email = user.email;
+      const password = 'password';
+
+      // when
+      const result = await service.login(email, password);
+
+      // then
+      expect(result).toBe(true);
+      expect(userService.getUserByEmailForLogin).toHaveBeenCalledTimes(1);
+      expect(userService.getUserByEmailForLogin).toHaveBeenCalledWith(email);
+      expect(bcrypt.compare).toHaveBeenCalledTimes(1);
+      expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
+    });
+
+    it('비밀번호가 일치하지 않으면 로그인에 실패한다.', async () => {
+      // given
+      (bcrypt.compare as jest.Mock).mockResolvedValue(false);
+
+      const user = userMockData;
+      jest.spyOn(userService, 'getUserByEmailForLogin').mockResolvedValue(user);
+
+      const email = user.email;
+      const password = 'wrongPassword';
+
+      // when
+      const result = await service.login(email, password);
+
+      // then
+      expect(result).toBe(false);
+      expect(userService.getUserByEmailForLogin).toHaveBeenCalledTimes(1);
+      expect(userService.getUserByEmailForLogin).toHaveBeenCalledWith(email);
+      expect(bcrypt.compare).toHaveBeenCalledTimes(1);
+      expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
+    });
+  });
+
   describe('register', () => {
     it('회원가입하는 경우 비밀번호를 암호화한다.', async () => {
       // given
