@@ -13,6 +13,10 @@ export class UserRepository {
     private readonly em: EntityManager,
   ) {}
 
+  async getOneById(id: number) {
+    return this.userRepository.findOne(id);
+  }
+
   async add(args: IAdd) {
     const user = this.userRepository.create(args);
     this.em.persist(user);

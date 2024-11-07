@@ -28,6 +28,24 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getUserById', () => {
+    it('ID로 사용자를 조회할 수 있다.', async () => {
+      // given
+      const user = userMockData;
+      jest.spyOn(userRepository, 'getOneById').mockResolvedValue(user);
+
+      const userId = 1;
+
+      // when
+      const result = await service.getUserById(userId);
+
+      // then
+      expect(result).toEqual(user);
+      expect(userRepository.getOneById).toHaveBeenCalledTimes(1);
+      expect(userRepository.getOneById).toHaveBeenCalledWith(userId);
+    });
+  });
+
   describe('addUser', () => {
     it('사용자를 추가할 수 있다.', async () => {
       // given
