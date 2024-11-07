@@ -10,6 +10,10 @@ export class UserService {
     return this.userRepository.getOneById(id);
   }
 
+  async getUserByEmailForLogin(email: string) {
+    return this.userRepository.getOneByEmailForLogin(email);
+  }
+
   async getUsers(offset: number, limit: number) {
     return this.userRepository.getMany(offset, limit);
   }

@@ -80,6 +80,14 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": ["email"],
+          "composite": false,
+          "keyName": "unique_email",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "user_pkey",
           "columnNames": ["id"],
           "composite": false,

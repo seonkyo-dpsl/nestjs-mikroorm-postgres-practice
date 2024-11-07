@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import { SoftDeletable } from 'mikro-orm-soft-delete';
 
 @SoftDeletable(() => User, 'deletedAt', () => new Date())
@@ -10,6 +10,7 @@ export class User {
   @Property({ length: 50 })
   name!: string;
 
+  @Unique({ name: 'unique_email' })
   @Property({ length: 100 })
   email!: string;
 

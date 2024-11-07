@@ -17,6 +17,10 @@ export class UserRepository {
     return this.userRepository.findOne(id);
   }
 
+  async getOneByEmailForLogin(email: string) {
+    return this.userRepository.findOne({ email }, { populate: ['password'] });
+  }
+
   async getMany(offset: number, limit: number) {
     return this.userRepository.find({}, { offset, limit });
   }
