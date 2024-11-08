@@ -39,3 +39,4 @@ lerna-debug.log*
 
 # mikrorm
 temp/
+ormconfig.json
